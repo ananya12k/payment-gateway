@@ -5,15 +5,15 @@ import { Row, Col } from "react-bootstrap";
 
 const GridPage = () => {
   const items = [
-    { itemName: "BLUE", description: "Blue Sky", price: 19.99, image: "../assets/blue.jpg", backgroundColor: "red" },
-    { itemName: "GREEN", description: "Green grass", price: 24.99, image: "image2.jpg", backgroundColor: "blue" },
-    { itemName: "RED", description: "Red apple", price: 14.99, image: "image3.jpg", backgroundColor: "red" },
-    { itemName: "YELLOW", description: "Yellow banana", price: 29.99, image: "image4.jpg", backgroundColor: "yellow" },
-    { itemName: "PURPLE", description: "Purple grapes", price: 19.99, image: "image5.jpg", backgroundColor: "purple" },
-    { itemName: "ORANGE", description: "Orange carrot", price: 24.99, image: "image6.jpg", backgroundColor: "orange" },
-    { itemName: "PINK", description: "Pink flower", price: 14.99, image: "image7.jpg", backgroundColor: "pink" },
-    { itemName: "BROWN", description: "Brown tree", price: 29.99, image: "image8.jpg", backgroundColor: "brown" },
-    { itemName: "BLACK", description: "Black cat", price: 19.99, image: "image9.jpg", backgroundColor: "black" },
+    { itemName: "BLUE", description: "Blue Sky", price: 19.99, backgroundColor: "red" },
+    { itemName: "GREEN", description: "Green grass", price: 24.99, backgroundColor: "blue" },
+    { itemName: "RED", description: "Red apple", price: 14.99, backgroundColor: "red" },
+    { itemName: "YELLOW", description: "Yellow banana", price: 29.99, backgroundColor: "yellow" },
+    { itemName: "PURPLE", description: "Purple grapes", price: 19.99, backgroundColor: "purple" },
+    { itemName: "ORANGE", description: "Orange carrot", price: 24.99,backgroundColor: "orange" },
+    { itemName: "PINK", description: "Pink flower", price: 14.99,backgroundColor: "pink" },
+    { itemName: "BROWN", description: "Brown tree", price: 29.99,  backgroundColor: "brown" },
+    { itemName: "BLACK", description: "Black cat", price: 19.99,  backgroundColor: "black" },
   ];
 
   const handleAddToCart = (item) => {
