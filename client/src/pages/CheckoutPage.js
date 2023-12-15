@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
-import Checkout from '../components/Checkout';
+// pages/CheckoutPage.js
+import React from 'react';
+import Layout from '../components/common/Layout';
+import CheckoutItem from '../components/CheckoutItem';
 
 const CheckoutPage = () => {
-  const [cartItems, setCartItems] = useState([]);
-
-  // Implement logic to fetch cart items from your backend
-  // For now, let's assume you have a function fetchCartItems
-  // const fetchedCartItems = await fetchCartItems();
-  // setCartItems(fetchedCartItems);
-  const sampleCartItems = [
-    { _id: '1', name: 'Item 1', price: 10.99 },
-    { _id: '2', name: 'Item 2', price: 19.99 },
-    // Add more cart items
+  const cartItems = [
+    { itemName: 'Item 1', quantity: 2, price: 20 },
+    // Add more items as needed
   ];
-  setCartItems(sampleCartItems);
 
   return (
-    <div>
-      <h1>Welcome to the Checkout Page</h1>
-      <Checkout cartItems={cartItems} />
-    </div>
+    <Layout>
+      <h2>Checkout Page</h2>
+      <ListGroup>
+        {cartItems.map((item, index) => (
+          <CheckoutItem key={index} {...item} />
+        ))}
+      </ListGroup>
+      {/* Add total and checkout button */}
+    </Layout>
   );
 };
 
 export default CheckoutPage;
-
