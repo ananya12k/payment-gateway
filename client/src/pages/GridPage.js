@@ -23,7 +23,7 @@ const GridPage = () => {
 
   return (
     <Layout>
-      <h2>Grid Page</h2>
+      <h2 >Shop Items</h2>
       <Row>
         {items.map((item) => (
           <Col key={item.itemName} className="col-sm-12 col-md-4 col-lg-4">
