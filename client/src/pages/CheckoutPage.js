@@ -2,6 +2,7 @@
 import React from 'react';
 import Layout from '../components/common/Layout';
 import CheckoutItem from '../components/CheckoutItem';
+import { ListGroup } from "react-bootstrap";
 
 const CheckoutPage = () => {
   const cartItems = [
