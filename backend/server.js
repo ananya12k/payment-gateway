@@ -2,11 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
-
 const ChannelModel = require('./models/channel');
 const { resolve } = require('path');
-require('dotenv').config({ path: '../..env' });
+require('dotenv').config({ path: '../.env' });
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2020-08-27',
@@ -45,10 +43,11 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
-// Serve static files
-app.use(express.static(process.env.STATIC_DIR));
 
-// Insert into Database
+// Serve static files
+app.use(express.static('../../client/html'));
+
+// MongoDB routes
 app.get('/insert', (req, res) => {
   var channelModel = new ChannelModel();
   channelModel.name = 'xyz';
@@ -63,7 +62,6 @@ app.get('/insert', (req, res) => {
     });
 });
 
-// Read from DATABASE
 app.get('/read', (req, res) => {
   ChannelModel.find()
     .exec()
@@ -75,10 +73,8 @@ app.get('/read', (req, res) => {
     });
 });
 
-// Update in Database
 app.get('/update', (req, res) => {
   const { id, name } = req.query;
-
   ChannelModel.findByIdAndUpdate(id, { name })
     .exec()
     .then((updatedDocument) => {
@@ -92,10 +88,8 @@ app.get('/update', (req, res) => {
     });
 });
 
-// Delete from Database
 app.get('/delete', (req, res) => {
   const { id } = req.query;
-
   ChannelModel.deleteOne({ _id: id })
     .exec()
     .then((result) => {
@@ -110,40 +104,29 @@ app.get('/delete', (req, res) => {
 });
 
 // Stripe routes
-app.use(express.static(process.env.STATIC_DIR));
-app.use(express.urlencoded());
-app.use(
-  express.json({
-    verify: function (req, res, buf) {
-      if (req.originalUrl.startsWith('/webhook')) {
-        req.rawBody = buf.toString();
-      }
-    },
-  })
-);
-
 app.get('/', (req, res) => {
   const path = resolve(process.env.STATIC_DIR + '/index.html');
   res.sendFile(path);
 });
 
 app.get('/config', async (req, res) => {
-  const price = await stripe.prices.retrieve(process.env.PRICE);
+  const price = 2000;
+  console.log('₹', price);
   res.send({
     publicKey: process.env.STRIPE_PUBLISHABLE_KEY,
-    unitAmount: price.unit_amount,
-    currency: price.currency,
   });
 });
 
 app.get('/checkout-session', async (req, res) => {
   const { sessionId } = req.query;
+  console.log(sessionId);
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   res.send(session);
 });
 
 app.post('/create-checkout-session', async (req, res) => {
   const domainURL = process.env.DOMAIN;
+  console.log(req.body);
   const { quantity } = req.body;
 
   const session = await stripe.checkout.sessions.create({
@@ -168,38 +151,20 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 app.post('/webhook', async (req, res) => {
-  let data;
-  let eventType;
-
-  if (process.env.STRIPE_WEBHOOK_SECRET) {
-    let event;
-    let signature = req.headers['stripe-signature'];
-
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.rawBody,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
-    } catch (err) {
-      console.log('⚠️  Webhook signature verification failed.');
-      return res.sendStatus(400);
-    }
-
-    data = event.data;
-    eventType = event.type;
-  } else {
-    data = req.body.data;
-    eventType = req.body.type;
-  }
-
-  if (eventType === 'checkout.session.completed') {
-    console.log('🔔  Payment received!');
-  }
-
-  res.sendStatus(200);
+  // Stripe webhook handler logic
+  // ...
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+function checkEnv() {
+  const price = 2000;
+  if (price === 'price_12345' || !price) {
+    console.log(
+      'You must set a Price ID in the environment variables. Please see the README.'
+    );
+    process.exit(0);
+  }
+}
