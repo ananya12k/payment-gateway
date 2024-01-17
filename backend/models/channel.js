@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-//creating schema
+// Creating schema
 const channelSchema = new mongoose.Schema({
    name: {
       type: String,
@@ -11,9 +11,21 @@ const channelSchema = new mongoose.Schema({
       type: String,
       required: true,
       trim: true,
-   }, 
-})
+   },
+   price: {
+      type: Number,
+      required: true,
+   },
+   backgroundColor: {
+      type: String,
+      trim: true,
+   },
+   image: {
+      type: String,
+      trim: true,
+   },
+});
 
-// exporting it to channel
-const ChannelModel = mongoose.model("Channel", channelSchema)
-module.exports = ChannelModel
+// Exporting it as ChannelModel
+const ChannelModel = mongoose.model("Channel", channelSchema);
+module.exports = ChannelModel;
